@@ -1,0 +1,61 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory
+coverage/
+.nyc_output/
+
+# dotenv environment variables
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+out/
+
+# Cache
+.cache/
+.tmp/
+.temp/
+.next/
+.nuxt/
+.svelte-kit/
+.storybook-out/
+.vite/
+
+# Puppeteer / Playwright cache & downloads
+.chromium/
+.puppeteer/
+.playwright/
+ms-playwright/
+
+# IDE/editor stuff
+.vscode/
+.idea/
+*.swp
+*.swo
+*.DS_Store
+
+# OS-specific files
+Thumbs.db
+.DS_Store
+
+# Docker
+docker-data/
+*.tar
