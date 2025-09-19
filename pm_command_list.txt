@@ -1,0 +1,33 @@
+pm2 save
+
+pm2 list
+
+pm2 logs news-scraper
+
+pm2 restart news-scraper
+
+pm2 stop news-scraper
+
+pm2 delete news-scraper
+
+pm2 start app.js --name news-scraper
+
+npm install --save-dev esbuild
+
+npx esbuild app.js --bundle --platform=node --outfile=dist/app.js
+
+
+pm2 start app.js --name news-scraper --watch
+
+pm2 stop news-scraper
+pm2 start news-scraper --watch
+
+
+pm2 restart news-scraper --watch
+
+
+pm2 start app.js --name news-scraper --watch --ignore-watch="node_modules logs .git"
+
+
+pm2 save
+pm2 startup

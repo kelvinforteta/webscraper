@@ -1,43 +1,37 @@
 import express from "express";
-import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import { scrapeWebsites } from "./scraper.js";
 
 dotenv.config();
-
 const app = express();
-app.use(bodyParser.json());
+app.use(express.json());
 
-// ✅ middleware to check Bearer token
-function authMiddleware(req, res, next) {
-    const authHeader = req.headers["authorization"];
-
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({ error: "Unauthorized: Missing Bearer token" });
-    }
-
-    const token = authHeader.split(" ")[1];
-
-    if (token !== process.env.API_TOKEN) {
-        return res.status(403).json({ error: "Forbidden: Invalid token" });
-    }
-
-    next();
-}
-
-// ✅ protected route
-app.post("/scrape", authMiddleware, async (req, res) => {
+app.post("/scrape", async (req, res) => {
     try {
-        const websites = req.body;
-        const data = await scrapeWebsites(websites);
-        res.json(data);
+        const { websites } = req.body;
+
+        if (!websites || !Array.isArray(websites)) {
+            return res.status(400).json({ error: "Invalid request" });
+        }
+
+        console.log("📩 Incoming scrape request:", JSON.stringify(websites, null, 2));
+
+        const results = await scrapeWebsites(websites);
+
+        console.log("✅ Scraping finished. Results count:", results.length);
+        res.json(results);
     } catch (err) {
-        console.error("Scraping error:", err);
-        res.status(500).json({ error: "Scraping failed" });
+        // 👇 add detailed logging
+        console.error("❌ Scraping error (server):", err.stack || err);
+
+        res.status(500).json({
+            error: "Scraping failed",
+            details: err.message || "Unknown error",
+        });
     }
 });
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+app.timeout = 660000; // 11 minutes
+app.listen(4000, () => {
+    console.log("🚀 Server running on http://localhost:4000");
 });
